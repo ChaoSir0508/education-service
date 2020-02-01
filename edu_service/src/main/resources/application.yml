@@ -1,0 +1,19 @@
+server:
+  port: 9001
+
+spring:
+  datasource:
+    username: root
+    password: root
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://127.0.01:3306/education?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
+
+  profiles:
+    active: dev
+  application:
+    name: education
+
+mybatis-plus:
+  type-aliases-package: info.weifu.chao.education.service
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
