@@ -4,6 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <modules>
         <module>edu_service</module>
+        <module>edu_common</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

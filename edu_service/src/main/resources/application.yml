@@ -8,12 +8,16 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://127.0.01:3306/education?useUnicode=true&characterEncoding=utf-8&serverTimezone=UTC
 
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
   profiles:
     active: dev
   application:
     name: education
 
 mybatis-plus:
-  type-aliases-package: info.weifu.chao.education.service
+  type-aliases-package: info.weifu.chao.edu_service.pojo
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
