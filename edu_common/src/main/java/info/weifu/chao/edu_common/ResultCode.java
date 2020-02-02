@@ -5,8 +5,8 @@ package info.weifu.chao.edu_common;
  */
 public interface ResultCode {
 
-    int SUCCESS = 2000;//成功
-    int ERROR = 2001;//失败
+    int SUCCESS = 20000;//成功
+    int ERROR = 20001;//失败
     int AUTH = 3000;//无权限
 
 

@@ -10,6 +10,7 @@ import info.weifu.chao.edu_service.service.EduTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -22,6 +23,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/edu_service/edu-teacher")
+@CrossOrigin
 public class EduTeacherController {
 
     @Autowired
@@ -78,7 +80,7 @@ public class EduTeacherController {
     @PostMapping("moreConditionPageList/{page}/{limit}")
     public R getMoreCondition(@PathVariable("page") Integer page, @PathVariable("limit") Integer limit,
                               @RequestBody(required = false) QueryTeacher queryTeacher){
-        Page<EduTeacher> pageTeacher = new Page<>();
+        Page<EduTeacher> pageTeacher = new Page<>(page,limit);
         eduTeacherService.pageListConditio(pageTeacher,queryTeacher);
         long total = pageTeacher.getTotal();
         List<EduTeacher> records = pageTeacher.getRecords();
