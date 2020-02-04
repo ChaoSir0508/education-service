@@ -3,14 +3,12 @@ package info.weifu.chao.edu_service.controller;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import info.weifu.chao.edu_common.R;
-import info.weifu.chao.edu_service.handler.EduException;
 import info.weifu.chao.edu_service.pojo.EduTeacher;
 import info.weifu.chao.edu_service.pojo.query.QueryTeacher;
 import info.weifu.chao.edu_service.service.EduTeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -110,11 +108,11 @@ public class EduTeacherController {
      */
     @GetMapping
     public R getEduTeacherList() {
-        try {
+       /* try {
             int i =1/0;
         } catch (Exception e) {
             throw new EduException(2001,"自定义异常");
-        }
+        }*/
         List<EduTeacher> list = eduTeacherService.list(null);
         return R.OK().data("itmes", list);
     }
@@ -126,8 +124,9 @@ public class EduTeacherController {
      * @return
      */
     @DeleteMapping("{id}")
-    public boolean deleteTeacherById(@PathVariable("id") String id) {
-        return eduTeacherService.removeById(id);
+    public R deleteTeacherById(@PathVariable("id") String id) {
+        eduTeacherService.removeById(id);
+        return R.OK();
     }
 
 }

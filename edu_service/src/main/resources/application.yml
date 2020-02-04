@@ -21,3 +21,12 @@ mybatis-plus:
   type-aliases-package: info.weifu.chao.edu_service.pojo
   configuration:
     log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#oss
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      accessKeyId: LTAI4FqPrxRtULcufb7YSUAS
+      accessKeySecret: DrvHYA64gAfZBFlKdNnMdgIYhqUF7m
+      bucketName: eduction

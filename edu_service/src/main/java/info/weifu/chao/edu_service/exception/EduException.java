@@ -1,4 +1,4 @@
-package info.weifu.chao.edu_service.handler;
+package info.weifu.chao.edu_service.exception;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

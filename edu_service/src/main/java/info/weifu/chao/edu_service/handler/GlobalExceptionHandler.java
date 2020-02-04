@@ -1,7 +1,7 @@
 package info.weifu.chao.edu_service.handler;
 
 import info.weifu.chao.edu_common.R;
-import info.weifu.chao.edu_service.pojo.EduTeacher;
+import info.weifu.chao.edu_service.exception.EduException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
