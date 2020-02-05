@@ -5,7 +5,6 @@ import info.weifu.chao.edu_service.pojo.EduSubject;
 import info.weifu.chao.edu_service.vo.SubjectNestVo;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
 import java.util.List;
 
 /**
@@ -21,4 +20,9 @@ public interface EduSubjectService extends IService<EduSubject> {
     List<String> importSubject(MultipartFile file);
 
     List<SubjectNestVo> GetNestSubjectList();
+
+    Boolean deleteSubject(String id);
+
+    Boolean addSubject(EduSubject eduSubject);
+
 }

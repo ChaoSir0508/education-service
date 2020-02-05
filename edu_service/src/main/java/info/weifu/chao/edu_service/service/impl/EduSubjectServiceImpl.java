@@ -14,6 +14,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -65,15 +66,11 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
                 //一级分类值
                 String valueOne = cellOne.getStringCellValue();
                 //判断一级分类是否存在
-                EduSubject existSubject = this.existSubjectOne(valueOne);
+                EduSubject existSubject = this.existSubject(null, valueOne);
                 String parent_id = null;
                 if (existSubject == null) {
                     //保存一级分类数据
-                    EduSubject eduSubject = new EduSubject();
-                    eduSubject.setTitle(valueOne);
-                    eduSubject.setParentId("0");
-                    eduSubject.setSort(0);
-                    baseMapper.insert(eduSubject);
+                    EduSubject eduSubject = this.addEduSubject(null, valueOne);
                     parent_id = eduSubject.getId();
                 } else {
                     parent_id = existSubject.getId();
@@ -89,14 +86,10 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
                 //二级分类值
                 String valueTwo = cellTwo.getStringCellValue();
                 //判断二级分类是否存在
-                EduSubject existSubjectTwo = this.existSubjectTwo(valueTwo, parent_id);
+                EduSubject existSubjectTwo = this.existSubject(valueTwo, parent_id);
                 if (existSubjectTwo == null) {
                     //保存二级分类数据
-                    EduSubject eduSubject = new EduSubject();
-                    eduSubject.setTitle(valueTwo);
-                    eduSubject.setParentId(parent_id);
-                    eduSubject.setSort(0);
-                    baseMapper.insert(eduSubject);
+                    this.addEduSubject(parent_id, valueTwo);
                 }
             }
             return message;
@@ -149,6 +142,62 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     /**
+     * 删除指定分类
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public Boolean deleteSubject(String id) {
+        QueryWrapper<EduSubject> eduSubjectQueryWrapper = new QueryWrapper<>();
+        eduSubjectQueryWrapper.eq("parent_id", id);
+        List<EduSubject> eduSubjects = baseMapper.selectList(eduSubjectQueryWrapper);
+        if (eduSubjects.size() != 0) {//存在二级
+            return false;
+        } else {//不存在二级
+            int i = baseMapper.deleteById(id);
+            return 1 > 0;
+        }
+    }
+
+    /**
+     * 添加节点
+     *
+     * @param eduSubject
+     * @return
+     */
+    @Override
+    public Boolean addSubject(EduSubject eduSubject) {
+        try {
+            this.addEduSubject(eduSubject.getParentId(), eduSubject.getTitle());
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * 添加一级或二级分类
+     *
+     * @param parentId
+     * @param title
+     * @return
+     */
+    private EduSubject addEduSubject(String parentId, String title) {
+        EduSubject eduSubject = new EduSubject();
+        eduSubject.setTitle(title);
+        if (StringUtils.isEmpty(parentId)) {//一级
+            eduSubject.setParentId("0");
+        } else {
+            eduSubject.setParentId(parentId);
+        }
+        eduSubject.setSort(0);
+        baseMapper.insert(eduSubject);
+        return eduSubject;
+    }
+
+    /**
      * 获得一级或二级分类
      *
      * @param rank
@@ -167,29 +216,20 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     /**
-     * 判断一级分类是否存在
-     *
-     * @param title
-     * @return
-     */
-    private EduSubject existSubjectOne(String title) {
-        QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
-        wrapper.eq("title", title);
-        wrapper.eq("parent_id", 0);
-        return baseMapper.selectOne(wrapper);
-    }
-
-    /**
-     * 判断二级分类是否存在
+     * 判断一级或二级分类是否存在
      *
      * @param title
      * @param parent_id
      * @return
      */
-    private EduSubject existSubjectTwo(String title, String parent_id) {
+    private EduSubject existSubject(String parent_id, String title) {
         QueryWrapper<EduSubject> wrapper = new QueryWrapper<>();
         wrapper.eq("title", title);
-        wrapper.eq("parent_id", parent_id);
+        if (StringUtils.isEmpty(parent_id)) {//一级
+            wrapper.eq("parent_id", 0);
+        } else {
+            wrapper.eq("parent_id", parent_id);
+        }
         return baseMapper.selectOne(wrapper);
     }
 
