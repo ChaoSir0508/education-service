@@ -1,8 +1,12 @@
 package info.weifu.chao.edu_service.pojo;
 
 import java.math.BigDecimal;
+
+import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
 import java.util.Date;
+
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
@@ -28,7 +32,7 @@ public class EduCourse implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @ApiModelProperty(value = "课程ID")
-    @TableId(value = "id", type = IdType.ID_WORKER)
+    @TableId(value = "id", type = IdType.ID_WORKER_STR)
     private String id;
 
     @ApiModelProperty(value = "课程讲师ID")
@@ -61,9 +65,11 @@ public class EduCourse implements Serializable {
     @ApiModelProperty(value = "视频状态 Draft未发布  Normal已发布")
     private String status;
 
+    @TableField(fill= FieldFill.INSERT)
     @ApiModelProperty(value = "创建时间")
     private Date gmtCreate;
 
+    @TableField(fill=FieldFill.INSERT_UPDATE)
     @ApiModelProperty(value = "更新时间")
     private Date gmtModified;
 

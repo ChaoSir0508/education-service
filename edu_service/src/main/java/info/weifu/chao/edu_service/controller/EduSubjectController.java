@@ -1,12 +1,10 @@
 package info.weifu.chao.edu_service.controller;
 
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import info.weifu.chao.edu_common.R;
 import info.weifu.chao.edu_service.pojo.EduSubject;
 import info.weifu.chao.edu_service.service.EduSubjectService;
-import info.weifu.chao.edu_service.vo.SubjectNestVo;
-import org.apache.ibatis.annotations.Delete;
+import info.weifu.chao.edu_service.pojo.vo.SubjectNestVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

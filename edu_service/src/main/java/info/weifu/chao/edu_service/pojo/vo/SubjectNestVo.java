@@ -1,4 +1,4 @@
-package info.weifu.chao.edu_service.vo;
+package info.weifu.chao.edu_service.pojo.vo;
 
 import lombok.Data;
 

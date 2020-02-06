@@ -2,7 +2,7 @@ package info.weifu.chao.edu_service.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import info.weifu.chao.edu_service.pojo.EduSubject;
-import info.weifu.chao.edu_service.vo.SubjectNestVo;
+import info.weifu.chao.edu_service.pojo.vo.SubjectNestVo;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;

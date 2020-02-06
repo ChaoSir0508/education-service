@@ -2,6 +2,7 @@ package info.weifu.chao.edu_service.service;
 
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
+import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
 
 /**
  * <p>
@@ -13,4 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface EduCourseService extends IService<EduCourse> {
 
+    String saveOrUpdateCourseInfo(CourseInfoForm courseInfoForm);
+
+    CourseInfoForm getCourseById(String id);
 }
