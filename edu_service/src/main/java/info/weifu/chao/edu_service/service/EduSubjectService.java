@@ -25,4 +25,5 @@ public interface EduSubjectService extends IService<EduSubject> {
 
     Boolean addSubject(EduSubject eduSubject);
 
+    EduSubject getByName(String subjectName);
 }

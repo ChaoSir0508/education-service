@@ -1,18 +1,30 @@
 package info.weifu.chao.edu_service.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.core.JsonToken;
 import info.weifu.chao.edu_service.exception.EduException;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import info.weifu.chao.edu_service.mapper.EduCourseMapper;
 import info.weifu.chao.edu_service.pojo.EduCourseDescription;
+import info.weifu.chao.edu_service.pojo.EduSubject;
+import info.weifu.chao.edu_service.pojo.EduTeacher;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
+import info.weifu.chao.edu_service.pojo.query.QueryCourse;
 import info.weifu.chao.edu_service.service.EduCourseDescriptionService;
 import info.weifu.chao.edu_service.service.EduCourseService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import info.weifu.chao.edu_service.service.EduSubjectService;
+import info.weifu.chao.edu_service.service.EduTeacherService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * <p>
@@ -28,6 +40,12 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     @Autowired
     private EduCourseDescriptionService eduCourseDescriptionService;
+
+    @Autowired
+    private EduTeacherService eduTeacherService;
+
+    @Autowired
+    private EduSubjectService eduSubjectService;
 
     /**
      * 添加课程信息
@@ -73,6 +91,46 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         BeanUtils.copyProperties(eduCourse, courseInfoForm);
         BeanUtils.copyProperties(courseDescription, courseInfoForm);
         return courseInfoForm;
+    }
+
+    /**
+     * 条件分页查询
+     *
+     * @param page
+     * @param limit
+     * @param queryCourse
+     * @return
+     */
+    @Override
+    public List<EduCourse> getMoreCondition(Integer page, Integer limit, QueryCourse queryCourse) {
+
+        Page<EduCourse> pageLimit = new Page<>(page, limit);
+        System.out.println(queryCourse);
+        //不包含查询条件
+        if (queryCourse == null) {
+            List<EduCourse> eduCourseIPage = baseMapper.selectPage(pageLimit, null).getRecords();
+            return eduCourseIPage;
+        }
+
+        QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
+        String teacherId = queryCourse.getTeacherId();
+        String courseName = queryCourse.getCourseName();
+        String subjectId = queryCourse.getSubjectId();
+        BigDecimal price = queryCourse.getPrice();
+        if (!StringUtils.isEmpty(teacherId)) {//教师名为条件
+            queryWrapper.eq("teacher_id", teacherId);
+        }
+        if (!StringUtils.isEmpty(subjectId)) {//分类名为条件
+            queryWrapper.eq("subject_id", subjectId);
+        }
+        if (!StringUtils.isEmpty(courseName)) {//课堂名为条件
+            queryWrapper.like("title", courseName);
+        }
+        if (!StringUtils.isEmpty(price)) {//价格为条件
+            queryWrapper.eq("price", price);
+        }
+        List<EduCourse> courseList = baseMapper.selectPage(pageLimit, queryWrapper).getRecords();
+        return courseList;
     }
 
     /**

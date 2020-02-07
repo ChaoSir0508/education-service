@@ -4,10 +4,13 @@ package info.weifu.chao.edu_service.controller;
 import info.weifu.chao.edu_common.R;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
+import info.weifu.chao.edu_service.pojo.query.QueryCourse;
 import info.weifu.chao.edu_service.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * <p>
@@ -25,8 +28,30 @@ public class EduCourseController {
     @Autowired
     private EduCourseService eduCourseService;
 
+
+    /**
+     * 条件分页查询
+     *
+     * @param page
+     * @param limit
+     * @param queryCourse
+     * @return
+     */
+    @PostMapping("{page}/{limit}")
+    public R getMoreCondition(@PathVariable Integer page, @PathVariable Integer limit,
+                              @RequestBody(required = false) QueryCourse queryCourse) {
+        try {
+            List<EduCourse> courses = eduCourseService.getMoreCondition(page, limit, queryCourse);
+            return R.OK().data("items", courses);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+    }
+
     /**
      * 根据id查询课程
+     *
      * @param id
      * @return
      */
@@ -34,7 +59,7 @@ public class EduCourseController {
     public R getCourseById(@PathVariable("id") String id) {
         CourseInfoForm eduCourse = eduCourseService.getCourseById(id);
         if (eduCourse != null) {
-            return R.OK().data("item",eduCourse);
+            return R.OK().data("item", eduCourse);
         } else {
             return R.ERROR();
         }

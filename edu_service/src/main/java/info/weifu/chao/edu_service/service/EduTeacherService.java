@@ -21,4 +21,6 @@ public interface EduTeacherService extends IService<EduTeacher> {
      * @param queryTeacher
      */
     void pageListConditio(Page<EduTeacher> pageTeacher, QueryTeacher queryTeacher);
+
+    EduTeacher getByName(String teacherName);
 }

@@ -178,6 +178,19 @@ public class EduSubjectServiceImpl extends ServiceImpl<EduSubjectMapper, EduSubj
     }
 
     /**
+     * 根据名称查找
+     * @param subjectName
+     * @return
+     */
+    @Override
+    public EduSubject getByName(String subjectName) {
+        QueryWrapper<EduSubject> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("title",subjectName);
+        EduSubject eduSubject = baseMapper.selectOne(queryWrapper);
+        return eduSubject;
+    }
+
+    /**
      * 添加一级或二级分类
      *
      * @param parentId

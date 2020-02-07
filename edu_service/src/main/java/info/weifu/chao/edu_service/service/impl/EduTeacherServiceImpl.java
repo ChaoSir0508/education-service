@@ -52,7 +52,20 @@ public class EduTeacherServiceImpl extends ServiceImpl<EduTeacherMapper, EduTeac
         if (!StringUtils.isEmpty(end)) {
             wrapper.le("gmt_modified", end);
         }
-        baseMapper.selectPage(pageTeacher,wrapper);
+        baseMapper.selectPage(pageTeacher, wrapper);
+    }
+
+    /**
+     * 根据名称查找
+     * @param teacherName
+     * @return
+     */
+    @Override
+    public EduTeacher getByName(String teacherName) {
+        QueryWrapper queryWrapper = new QueryWrapper();
+        queryWrapper.eq("name", teacherName);
+        EduTeacher teacher = baseMapper.selectOne(queryWrapper);
+        return teacher;
     }
 
 }
