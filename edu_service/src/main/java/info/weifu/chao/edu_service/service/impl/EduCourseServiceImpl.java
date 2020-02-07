@@ -1,9 +1,7 @@
 package info.weifu.chao.edu_service.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.fasterxml.jackson.core.JsonToken;
 import info.weifu.chao.edu_service.exception.EduException;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import info.weifu.chao.edu_service.mapper.EduCourseMapper;
@@ -11,6 +9,7 @@ import info.weifu.chao.edu_service.pojo.EduCourseDescription;
 import info.weifu.chao.edu_service.pojo.EduSubject;
 import info.weifu.chao.edu_service.pojo.EduTeacher;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
+import info.weifu.chao.edu_service.pojo.list.CourseList;
 import info.weifu.chao.edu_service.pojo.query.QueryCourse;
 import info.weifu.chao.edu_service.service.EduCourseDescriptionService;
 import info.weifu.chao.edu_service.service.EduCourseService;
@@ -24,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -95,21 +95,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 条件分页查询
-     *
-     * @param page
-     * @param limit
+     * @param pageLimit
      * @param queryCourse
      * @return
      */
     @Override
-    public List<EduCourse> getMoreCondition(Integer page, Integer limit, QueryCourse queryCourse) {
+    public List<CourseList> getMoreCondition(Page pageLimit, QueryCourse queryCourse) {
 
-        Page<EduCourse> pageLimit = new Page<>(page, limit);
-        System.out.println(queryCourse);
         //不包含查询条件
         if (queryCourse == null) {
-            List<EduCourse> eduCourseIPage = baseMapper.selectPage(pageLimit, null).getRecords();
-            return eduCourseIPage;
+            List<EduCourse> courseList = baseMapper.selectPage(pageLimit, null).getRecords();
+            return this.convertToCourserList(courseList);
         }
 
         QueryWrapper<EduCourse> queryWrapper = new QueryWrapper<>();
@@ -130,8 +126,29 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
             queryWrapper.eq("price", price);
         }
         List<EduCourse> courseList = baseMapper.selectPage(pageLimit, queryWrapper).getRecords();
-        return courseList;
+        return this.convertToCourserList(courseList);
     }
+
+    /**
+     * 将数据库对象转换为列表可视化对象
+     * @param eduCourses
+     * @return
+     */
+    private List<CourseList> convertToCourserList(List<EduCourse> eduCourses) {
+        ArrayList<CourseList> courseLists = new ArrayList<>();
+        for (EduCourse eduCourse : eduCourses) {
+            System.out.println(eduCourse);
+            CourseList courseList = new CourseList();
+            //根据教师id获取教师对象，通过教师对象获得名称
+            courseList.setTeacherName(eduTeacherService.getById(eduCourse.getTeacherId()).getName());
+            //根据分类id获取教师对象，通过分类对象获得名称
+            courseList.setSubjectName(eduSubjectService.getById(eduCourse.getSubjectId()).getTitle());
+            BeanUtils.copyProperties(eduCourse, courseList);
+            courseLists.add(courseList);
+        }
+        return courseLists;
+    }
+
 
     /**
      * 创建课程描述信息
@@ -149,4 +166,5 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
         eduCourseDescription.setId(courseId);
         return eduCourseDescription;
     }
+
 }

@@ -1,9 +1,11 @@
 package info.weifu.chao.edu_service.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import info.weifu.chao.edu_common.R;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
+import info.weifu.chao.edu_service.pojo.list.CourseList;
 import info.weifu.chao.edu_service.pojo.query.QueryCourse;
 import info.weifu.chao.edu_service.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,9 +42,10 @@ public class EduCourseController {
     @PostMapping("{page}/{limit}")
     public R getMoreCondition(@PathVariable Integer page, @PathVariable Integer limit,
                               @RequestBody(required = false) QueryCourse queryCourse) {
+        Page<EduCourse> eduCoursePage = new Page<>(page,limit);
         try {
-            List<EduCourse> courses = eduCourseService.getMoreCondition(page, limit, queryCourse);
-            return R.OK().data("items", courses);
+            List<CourseList> courses = eduCourseService.getMoreCondition(eduCoursePage, queryCourse);
+            return R.OK().data("items", courses).data("total",eduCoursePage.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
             return R.ERROR();

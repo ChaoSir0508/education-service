@@ -1,8 +1,10 @@
 package info.weifu.chao.edu_service.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
+import info.weifu.chao.edu_service.pojo.list.CourseList;
 import info.weifu.chao.edu_service.pojo.query.QueryCourse;
 
 import java.util.List;
@@ -21,5 +23,5 @@ public interface EduCourseService extends IService<EduCourse> {
 
     CourseInfoForm getCourseById(String id);
 
-    List<EduCourse> getMoreCondition(Integer page, Integer limit, QueryCourse queryCourse);
+    List<CourseList> getMoreCondition(Page eduCoursePage, QueryCourse queryCourse);
 }
