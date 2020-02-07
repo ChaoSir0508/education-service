@@ -95,6 +95,7 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
 
     /**
      * 条件分页查询
+     *
      * @param pageLimit
      * @param queryCourse
      * @return
@@ -130,7 +131,17 @@ public class EduCourseServiceImpl extends ServiceImpl<EduCourseMapper, EduCourse
     }
 
     /**
+     * 查询全部
+     * @return
+     */
+    @Override
+    public List<EduCourse> getCourseList() {
+        return baseMapper.selectList(null);
+    }
+
+    /**
      * 将数据库对象转换为列表可视化对象
+     *
      * @param eduCourses
      * @return
      */

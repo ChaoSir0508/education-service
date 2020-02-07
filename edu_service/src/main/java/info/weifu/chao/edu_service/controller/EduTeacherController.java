@@ -108,11 +108,6 @@ public class EduTeacherController {
      */
     @GetMapping
     public R getEduTeacherList() {
-       /* try {
-            int i =1/0;
-        } catch (Exception e) {
-            throw new EduException(2001,"自定义异常");
-        }*/
         List<EduTeacher> list = eduTeacherService.list(null);
         return R.OK().data("itmes", list);
     }

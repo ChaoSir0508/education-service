@@ -60,16 +60,13 @@ public class EduSubjectController {
     }
 
     /**
-     * 获得分类列表
+     * 查询所有
      *
      * @return
      */
-    @GetMapping("")
+    @GetMapping
     public R GetNestSubjectList() {
         List<SubjectNestVo> voList = eduSubjectService.GetNestSubjectList();
-        for (SubjectNestVo subjectNestVo : voList) {
-            System.out.println(subjectNestVo);
-        }
         return R.OK().data("items", voList);
     }
 

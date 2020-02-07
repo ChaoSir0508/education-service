@@ -24,4 +24,6 @@ public interface EduCourseService extends IService<EduCourse> {
     CourseInfoForm getCourseById(String id);
 
     List<CourseList> getMoreCondition(Page eduCoursePage, QueryCourse queryCourse);
+
+    List<EduCourse> getCourseList();
 }

@@ -32,6 +32,22 @@ public class EduCourseController {
 
 
     /**
+     * 查询所有
+     *
+     * @return
+     */
+    @GetMapping
+    public R getCourseList() {
+        try {
+            List<EduCourse> list = eduCourseService.getCourseList();
+            return R.OK().data("items",list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return R.ERROR();
+        }
+    }
+
+    /**
      * 条件分页查询
      *
      * @param page
@@ -42,10 +58,10 @@ public class EduCourseController {
     @PostMapping("{page}/{limit}")
     public R getMoreCondition(@PathVariable Integer page, @PathVariable Integer limit,
                               @RequestBody(required = false) QueryCourse queryCourse) {
-        Page<EduCourse> eduCoursePage = new Page<>(page,limit);
+        Page<EduCourse> eduCoursePage = new Page<>(page, limit);
         try {
             List<CourseList> courses = eduCourseService.getMoreCondition(eduCoursePage, queryCourse);
-            return R.OK().data("items", courses).data("total",eduCoursePage.getTotal());
+            return R.OK().data("items", courses).data("total", eduCoursePage.getTotal());
         } catch (Exception e) {
             e.printStackTrace();
             return R.ERROR();
