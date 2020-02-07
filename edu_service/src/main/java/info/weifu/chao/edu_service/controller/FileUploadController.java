@@ -23,8 +23,29 @@ public class FileUploadController {
      * @param file
      * @return
      */
-    @PostMapping("/upload")
-    public R uploadTeacherAvatar(@RequestParam("file") MultipartFile file) {
+    @PostMapping("/uploadAvatar")
+    public R uploadAvatar(@RequestParam("file") MultipartFile file) {
+        return this.upload("avatar", file);
+    }
+
+    /**
+     * 上传封面
+     * @param file
+     * @return
+     */
+    @PostMapping("/uploadCover")
+    public R uploadCover(@RequestParam("file") MultipartFile file) {
+        return this.upload("cover", file);
+    }
+
+    /**
+     * 上传文件的核心
+     *
+     * @param type
+     * @param file
+     * @return
+     */
+    private R upload(String type, MultipartFile file) {
         //连接oss准备工作
         String endpoint = ConstantPropertiesUtils.ENDPOINT;//地域节点
         String accessKeyId = ConstantPropertiesUtils.ACCESS_KEY_ID;//密钥ID
@@ -33,7 +54,7 @@ public class FileUploadController {
         OSS ossClient = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);//开启连接
         try {
             //文件路径加名称
-            String filename = "avatar/" + new DateTime().toString("yyyy/MM/dd") + "/" + UUID.randomUUID().toString() + file.getOriginalFilename();//设置日期格式
+            String filename = type + "/" + new DateTime().toString("yyyy/MM/dd") + "/" + UUID.randomUUID().toString() + file.getOriginalFilename();//设置日期格式
             //输入流
             InputStream inputStream = file.getInputStream();
             //文件上传
