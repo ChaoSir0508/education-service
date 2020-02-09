@@ -5,7 +5,6 @@ import lombok.Data;
 @Data
 public class VideoVo {
 
-    private Integer id;
     private String title;
 
 

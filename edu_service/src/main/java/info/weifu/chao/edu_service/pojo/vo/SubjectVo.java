@@ -6,7 +6,7 @@ import lombok.Data;
 public class SubjectVo {
 
 
-    private String id;
+    private String  id;
     private String title;
 
 }

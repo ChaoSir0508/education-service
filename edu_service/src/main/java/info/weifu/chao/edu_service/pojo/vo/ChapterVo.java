@@ -7,7 +7,7 @@ import java.util.List;
 
 @Data
 public class ChapterVo {
-    private Integer id;
+    private String  id;
     private String title;
 
 
