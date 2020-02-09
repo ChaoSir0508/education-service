@@ -2,11 +2,14 @@ package info.weifu.chao.edu_service.controller;
 
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import info.weifu.chao.edu_common.R;
 import info.weifu.chao.edu_service.pojo.EduCourse;
 import info.weifu.chao.edu_service.pojo.from.CourseInfoForm;
 import info.weifu.chao.edu_service.pojo.list.CourseList;
 import info.weifu.chao.edu_service.pojo.query.QueryCourse;
+import info.weifu.chao.edu_service.pojo.vo.ChapterVo;
 import info.weifu.chao.edu_service.service.EduCourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
@@ -30,6 +33,21 @@ public class EduCourseController {
     @Autowired
     private EduCourseService eduCourseService;
 
+    /**
+     * 根据id删除
+     * @param id
+     * @return
+     */
+    @DeleteMapping("{id}")
+    public R deleteCourseById(@PathVariable String id) {
+        Boolean flag = eduCourseService.deleteCourseById(id);
+        if (flag) {
+            return R.OK();
+        } else {
+            return R.ERROR();
+        }
+    }
+
 
     /**
      * 查询所有
@@ -40,7 +58,7 @@ public class EduCourseController {
     public R getCourseList() {
         try {
             List<EduCourse> list = eduCourseService.getCourseList();
-            return R.OK().data("items",list);
+            return R.OK().data("items", list);
         } catch (Exception e) {
             e.printStackTrace();
             return R.ERROR();

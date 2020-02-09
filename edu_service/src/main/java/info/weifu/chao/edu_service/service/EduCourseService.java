@@ -26,4 +26,6 @@ public interface EduCourseService extends IService<EduCourse> {
     List<CourseList> getMoreCondition(Page eduCoursePage, QueryCourse queryCourse);
 
     List<EduCourse> getCourseList();
+
+    Boolean deleteCourseById(String id);
 }
